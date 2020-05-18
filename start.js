@@ -11,6 +11,14 @@ mongoose
     // console.log(con.connections);
   });
 
+// include the  models
+require("./models/User");
+require("./models/Question");
+require("./models/Quiz");
+require("./models/CurrentQuiz");
+require("./models/QuestionResponse");
+require("./models/QuizHistory");
+
 // start the app
 const app = require("./app");
 const port = process.env.PORT || 5000;
