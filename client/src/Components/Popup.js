@@ -9,11 +9,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} timeout={1000} />;
 });
 
-export default function Popup() {
+export default function Popup(props) {
   const [open, setOpen] = React.useState(true);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const goToLogin = () => {
+    props.history.push("/AdminLogIn");
   };
 
   const handleClose = () => {
@@ -52,7 +52,7 @@ export default function Popup() {
           </h1>
 
           <Button
-            onClick={handleClose}
+            onClick={goToLogin}
             size="large"
             color="primary"
             variant="contained"

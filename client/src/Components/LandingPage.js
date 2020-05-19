@@ -12,7 +12,7 @@ export default class LandingPage extends Component {
   }
 
   render() {
-    let res = this.state.isDocumentReady ? <Popup /> : null;
+    let res = this.state.isDocumentReady ? <Popup {...this.props} /> : null;
 
     return <div className="banner">{res}</div>;
   }
