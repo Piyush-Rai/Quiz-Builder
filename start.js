@@ -5,19 +5,20 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then((con) => {
     console.log("connected with db");
     // console.log(con.connections);
   });
 
-// include the  models
-require("./models/User");
-require("./models/Question");
-require("./models/Quiz");
-require("./models/CurrentQuiz");
-require("./models/QuestionResponse");
-require("./models/QuizHistory");
+// // include the  models
+// require("./models/User");
+// require("./models/Question");
+// require("./models/Quiz");
+// require("./models/CurrentQuiz");
+// require("./models/QuestionResponse");
+// require("./models/QuizHistory");
 
 // start the app
 const app = require("./app");

@@ -17,6 +17,11 @@ const quizSchema = new Schema({
     },
   ],
   description: String,
+  instruction: String,
+  isEnable: {
+    type: Number,
+    default: 1,
+  },
 });
 
 module.exports = mongoose.model("Quiz", quizSchema);

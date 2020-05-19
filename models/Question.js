@@ -12,11 +12,11 @@ const questionSchema = new Schema({
     required: true,
   },
   ansDescription: String,
-  semester: Number,
-  category: String,
-  published: {
-    type: Boolean,
-    default: false,
+
+  tag: String,
+  isEnable: {
+    type: Number,
+    default: 1,
   },
 });
 
