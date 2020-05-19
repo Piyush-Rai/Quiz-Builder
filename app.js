@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const Cors = require("cors");
 const routes = require("./routes");
 const app = express();
-
+app.use(Cors());
 // Use bodyParser to put raw req properties at req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

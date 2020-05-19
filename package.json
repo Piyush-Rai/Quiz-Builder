@@ -4,14 +4,19 @@
   "description": "",
   "main": "start.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node start.js",
-    "server": "nodemon start.js"
+    "server": "nodemon start.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "author": "PIYUSH RAI",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.9.14"
   },
