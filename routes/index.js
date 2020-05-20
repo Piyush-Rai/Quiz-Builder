@@ -9,18 +9,53 @@ router.get("/welcome", (req, res) => {
 });
 
 //questions route
+
+// add question
 router.post("/api/question/new", questionController.addQuestions);
 
-router.post("/api/question/edit", questionController.editQuestion);
+// edit question
+router.patch("/api/question/edit/:id", questionController.editQuestion);
+
+// delete question
+router.delete("/api/question/delete/:id", questionController.deleteQuestion);
+
+// // get questions by tags
+// router.get("/api/question/find/:tag", questionController.getByTag);
+
+// get question by id
+router.get("/api/question/get/:id", questionController.getQuestion);
 
 // quiz routes
 
-router.get("/api/quiz/current", quizController.getCurrentQuiz);
+//get any quiz
+router.get("/api/quiz/get/:id", quizController.getQuiz);
 
-router.post("/api/admin/setCurrentQuiz", adminController.setCurrentQuiz);
+//get All quizzes
+router.get("/api/quiz/allquizzes", quizController.getQuizzes);
 
+//get all questions for a Quiz
+router.get("/api/quiz/questions/:id", quizController.getQuestion);
+
+//Admin Routes
+
+//ADD quiz
 router.post("/api/admin/quiz/new", adminController.addQuiz);
 
-router.get("/api/admin/quiz", adminController.getQuizzes);
+//Edit Quiz
+router.patch("/api/admin/quiz/edit/:id", adminController.editQuiz);
+
+// Delete Quiz
+router.delete("/api/admin/quiz/delete/:id", adminController.deleteQuiz);
+
+// Disable Question in existing quiz
+router.patch(
+  "/api/admin/quiz/disable/:quizid/:quesid",
+  adminController.disableQuestion
+);
+//Enable Question in a quiz
+router.patch(
+  "/api/admin/quiz/enable/:quizid/:quesid",
+  adminController.enableQuestion
+);
 
 module.exports = router;

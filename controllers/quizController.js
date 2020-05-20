@@ -1,25 +1,73 @@
-const CurrentQuiz = require("../models/CurrentQuiz");
+const Quiz = require("../models/Quiz");
 
-// Returns the list of questions for the current Quiz
-exports.getCurrentQuiz = async (req, res) => {
+exports.getQuiz = async (req, res) => {
   // get the current Quiz object
-  let currentQuiz = await CurrentQuiz.findOne().populate([
-    {
-      path: "currentQuizId",
-      model: "Quiz",
-      populate: {
+  try {
+    let currentQuiz = await Quiz.findById(req.params.id);
+
+    res.status(200).json({
+      status: "success",
+      data: currentQuiz,
+    });
+  } catch (error) {
+    console.log("hello");
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry  not found",
+    });
+  }
+};
+
+exports.getQuizzes = async (req, res) => {
+  try {
+    console.log("dffb");
+    const quizzes = await Quiz.find({ isEnable: 1 }).sort({ startTime: -1 });
+    console.log(quizzes);
+    res.status(200).json({
+      status: "success",
+      data: quizzes,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log("hello");
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry  not found",
+    });
+  }
+};
+
+exports.getQuestion = async (req, res) => {
+  // get the current Quiz object
+  try {
+    let accesslevel = req.headers["accesslevel"];
+    console.log("good");
+    let currentQuiz = await Quiz.findById(req.params.id).populate([
+      {
         path: "questions",
         model: "Question",
       },
-    },
-  ]);
+    ]);
 
-  const currentTime = new Date().getTime();
-  const quizStartTime = new Date(currentQuiz.currentQuizId.startTime).getTime();
+    const currentTime = new Date().getTime();
+    const quizStartTime = new Date(currentQuiz.startTime).getTime();
 
-  // Return empty array if quiz is yet to start
-  if (currentTime < quizStartTime) return res.json([]);
-
-  const questions = currentQuiz.currentQuizId.questions;
-  res.json(questions);
+    if (currentTime < quizStartTime && accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: currentQuiz.questions,
+      });
+    }
+  } catch (error) {
+    console.log("good");
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry  not found",
+    });
+  }
 };

@@ -3,11 +3,10 @@ const Schema = mongoose.Schema;
 const { USER_LEVEL } = require("../constants/accessLevel");
 
 const userSchema = new Schema({
-  googleId: String,
   name: String,
   email: String,
+  password: String,
 
-  lastSubmission: String,
   accessLevel: {
     type: Number,
     default: USER_LEVEL,

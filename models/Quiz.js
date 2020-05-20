@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const quizSchema = new Schema({
+  description: String,
   startTime: {
     type: Date,
     required: true,
@@ -16,7 +17,7 @@ const quizSchema = new Schema({
       ref: "Question",
     },
   ],
-  description: String,
+
   instruction: String,
   isEnable: {
     type: Number,

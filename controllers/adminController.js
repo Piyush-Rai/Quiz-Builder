@@ -1,23 +1,14 @@
 const Quiz = require("../models/Quiz");
-const CurrentQuiz = require("../models/CurrentQuiz");
-const Question = require("../models/Question");
-// Create or Edit a  Quiz
+const ObjectId = require("mongodb").ObjectID;
+
 exports.addQuiz = async (req, res) => {
   try {
-    // Check if quiz contains an _id field
-    if (req.body._id) {
-      // Update the quiz
-      const newQuiz = await Quiz.findByIdAndUpdate(req.body._id, {
-        startTime: new Date(req.body.startTime),
-        endTime: new Date(req.body.endTime),
-        description: req.body.description,
-        instruction: req.body.instruction,
-        isEnable: req.body.isEnable,
-      });
-
-      res.json({
-        quizEditSuccess: "Quiz edited Successfully!",
-        newQuiz,
+    let accesslevel = req.headers["accesslevel"];
+    console.log("hello==" + accesslevel);
+    if (accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
       });
     } else {
       // Create a new quiz
@@ -29,35 +20,154 @@ exports.addQuiz = async (req, res) => {
         instruction: req.body.instruction || "",
       }).save();
 
-      res.json({
-        quizSubmissionSuccess: "Quiz Submission Successful!",
-        newQuiz,
+      res.status(201).json({
+        status: "success",
+        data: newQuiz,
       });
     }
   } catch (err) {
-    res.status(400).send(err);
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry something wrong",
+    });
   }
 };
 
-// Get quizzes
-exports.getQuizzes = async (req, res) => {
-  const quizzes = await Quiz.find({ isEnable: 1 })
-    .sort({ startTime: -1 })
-    .limit(5);
+exports.editQuiz = async (req, res) => {
+  try {
+    let accesslevel = req.headers["accesslevel"];
 
-  res.json(quizzes);
+    if (accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
+      });
+    } else {
+      const updatedquiz = await Quiz.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: updatedquiz,
+      });
+    }
+  } catch (e) {
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry something wrong",
+    });
+  }
 };
 
-// Set current quiz
-// a quiz will be present in req.body
-// req.body._id will give the id of the quiz
-exports.setCurrentQuiz = async (req, res) => {
-  const currentQuiz = await CurrentQuiz.findOne();
+exports.deleteQuiz = async (req, res) => {
+  try {
+    let accesslevel = req.headers["accesslevel"];
 
-  // Update it's currentQuizId if req.body has an _id property
-  if (req.body._id) {
-    currentQuiz["currentQuizId"] = req.body._id;
-    currentQuiz.save();
+    if (accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
+      });
+    } else {
+      const deletedquiz = await Quiz.findByIdAndDelete(req.params.id);
+      console.log(deletedquiz);
+      res.status(204).json({
+        status: "success",
+        data: null,
+      });
+    }
+  } catch (e) {
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry something wrong",
+    });
   }
-  res.json({ message: "Current Quiz Changed Successfully!" });
+};
+
+exports.disableQuestion = async (req, res) => {
+  try {
+    let accesslevel = req.headers["accesslevel"];
+
+    if (accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
+      });
+    } else {
+      let currentQuiz = await Quiz.findById(req.params.quizid);
+
+      console.log(currentQuiz);
+      let allQuestions = currentQuiz.questions.filter((e) => {
+        console.log(e);
+        let id = JSON.stringify(e);
+        let idparsed = JSON.parse(id);
+        if (idparsed === req.params.quesid) return false;
+
+        return true;
+      });
+      let update = { questions: allQuestions };
+      const updatedquiz = await Quiz.findByIdAndUpdate(
+        req.params.quizid,
+        update,
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: updatedquiz,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry something wrong",
+    });
+  }
+};
+
+exports.enableQuestion = async (req, res) => {
+  try {
+    let accesslevel = req.headers["accesslevel"];
+
+    if (accesslevel !== "admin") {
+      res.status(401).json({
+        status: "accessdenied",
+        data: "You do not have required access ",
+      });
+    } else {
+      let currentQuiz = await Quiz.findById(req.params.quizid);
+
+      let allQuestions = [
+        ...currentQuiz.questions,
+        ObjectId(req.params.quesid),
+      ];
+      let update = { questions: allQuestions };
+      const updatedquiz = await Quiz.findByIdAndUpdate(
+        req.params.quizid,
+        update,
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: updatedquiz,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({
+      status: "failure",
+      message: "Sorry something wrong",
+    });
+  }
 };
