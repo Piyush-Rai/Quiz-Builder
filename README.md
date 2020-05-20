@@ -51,6 +51,6 @@ Id-- It is used to uniquely identify the document in database created by mongoDb
 
 ### Add Question to a existing Quiz using Question Id and Quiz Id in which we have to add
 
-### Disable any Question in existing quiz by using Question Id and Quiz Id for where question has to be disabled
+### Disable any Question in existing quiz by using Question Id and Quiz Id from where question has to be disabled
 
-### Enable any Question in existing quiz by using Question Id and Quiz Id for where question has to be disabled
+### Enable any Question in existing quiz by using Question Id and Quiz Id from where question has to be disabled
