@@ -69,7 +69,6 @@ export default function Popup(props) {
             Admin
           </Button>
           <Button
-            onClick={handleClose}
             size="large"
             color="primary"
             variant="contained"

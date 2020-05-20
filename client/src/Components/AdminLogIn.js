@@ -15,6 +15,12 @@ class LoginTab extends React.Component {
     password: "",
   };
 
+  componentWillMount() {
+    if (localStorage.length > 0) {
+      this.props.history.push("/AdminDashboard");
+    }
+  }
+
   handleInputUser = (e) => {
     this.setState({
       username: e.target.value,
@@ -34,7 +40,7 @@ class LoginTab extends React.Component {
 
       this.props.history.push("/AdminDashboard");
     } else {
-      alert("Please fill correct deatils upto standard");
+      alert("Details length is short ");
     }
   };
 
