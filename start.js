@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-
+const { mongoURI } = require("./keys");
 mongoose
-  .connect("mongodb://localhost:27017/QUIZAPPLICATION", {
+  .connect(mongoURI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,

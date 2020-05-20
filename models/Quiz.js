@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const quizSchema = new Schema({
-  description: String,
+  description: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   startTime: {
     type: Date,
     required: true,

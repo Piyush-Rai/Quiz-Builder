@@ -47,6 +47,12 @@ router.patch("/api/admin/quiz/edit/:id", adminController.editQuiz);
 // Delete Quiz
 router.delete("/api/admin/quiz/delete/:id", adminController.deleteQuiz);
 
+// Add question to a Quiz
+router.patch(
+  "/api/admin/quiz/add/:quizid/:quesid",
+  adminController.enableQuestion
+);
+
 // Disable Question in existing quiz
 router.patch(
   "/api/admin/quiz/disable/:quizid/:quesid",
