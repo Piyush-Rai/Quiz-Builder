@@ -1,6 +1,19 @@
 ### What is this?
 
 It is a quiz app . The admin can manage the Quizzes through provied API and the users can see quiz and Questions
+Technology Stack
+Frontend
+   React js
+   Material Ui
+Backend 
+   Node js
+   Express js
+Database  
+   MongoDB(NO SQL)
+   
+
+
+
 
 ### How to run this locally?
 
@@ -22,6 +35,26 @@ mongoURI
 #### Running both client and server (development server)
 
 - `npm run dev`
+
+
+#### Database Models
+    Question
+        #text
+        #choices
+        #correctAnsIndex
+        #ansDescription
+        #tag
+        #isEnable
+        
+    Quiz
+        #description
+        #startTime
+        #endTime
+        #questions
+        #instruction
+        #isEnable
+
+
 
 #### Available Api end points are :
 
